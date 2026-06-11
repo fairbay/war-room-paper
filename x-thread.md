@@ -12,4 +12,4 @@
 
 6/ The rule that makes it work: each rung must be genuinely exhausted before climbing. And the stance that makes it cultural: Rung 3 is not a failure. A documented judgment call is autonomous competence, whether or not it proves optimal.
 
-7/ I run a real product company this way — one human, many agents. The full framework (capability asymmetry, mission capture vs solution design, why documentation is the load-bearing structure, and where it still breaks in production): [LINK]
+7/ I run a real product company this way — one human, many agents. The full framework (capability asymmetry, mission capture vs solution design, why documentation is the load-bearing structure, and where it still breaks in production): https://war-room-paper.vercel.app
