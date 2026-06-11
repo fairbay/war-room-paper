@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The War Room Model — AI-Empowered Product Development</title>
+<meta name="description" content="A framework for solo builders working with coordinated AI agents: capability-based asymmetry, the three-path decision problem, and the Decision Ladder.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1714; --paper: #f8f5f0; --warm: #c4956a; --warm-light: #e8d5c4;
+    --warm-faint: #f2ebe3; --accent: #8b4513; --muted: #6b635a; --rule: #d4cdc4;
+    --diagram-bg: #fdfbf8; --node-expert: #5b7a64; --node-human: #b8612e;
+    --node-doc: #4a6a8a; --node-decision: #8b6e4e;
+    --path-a: #c4956a; --path-b: #8b4513; --path-c: #5b7a64;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--paper); color: var(--ink); font-family: 'Source Serif 4', Georgia, serif; font-size: 17px; line-height: 1.72; -webkit-font-smoothing: antialiased; }
+  .page { max-width: 740px; margin: 0 auto; padding: 80px 32px 120px; }
+  .header { border-bottom: 1px solid var(--rule); padding-bottom: 48px; margin-bottom: 56px; }
+  .label { font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); }
+  h1 { font-family: 'Playfair Display', serif; font-size: clamp(38px, 7vw, 54px); font-weight: 700; line-height: 1.12; margin: 16px 0 14px; }
+  .subtitle { font-size: 20px; font-style: italic; color: var(--muted); line-height: 1.5; }
+  .audience { margin-top: 22px; font-family: 'DM Sans', sans-serif; font-size: 13.5px; color: var(--muted); background: var(--warm-faint); border-left: 3px solid var(--warm); padding: 12px 16px; border-radius: 0 6px 6px 0; }
+  .byline { margin-top: 20px; font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--muted); }
+  h2 { font-family: 'Playfair Display', serif; font-size: 29px; font-weight: 700; margin: 64px 0 18px; line-height: 1.25; }
+  h2 .num { color: var(--warm); font-style: italic; margin-right: 10px; }
+  h3 { font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; letter-spacing: 0.04em; margin: 34px 0 10px; color: var(--accent); }
+  p { margin-bottom: 18px; }
+  p + p { text-indent: 0; }
+  .pull { font-family: 'Playfair Display', serif; font-size: 24px; font-style: italic; line-height: 1.45; color: var(--accent); border-left: 3px solid var(--warm); padding: 6px 0 6px 24px; margin: 34px 0; }
+  figure { background: var(--diagram-bg); border: 1px solid var(--rule); border-radius: 10px; padding: 26px 18px 14px; margin: 34px 0; }
+  figcaption { font-family: 'DM Sans', sans-serif; font-size: 12.5px; color: var(--muted); text-align: center; margin-top: 12px; }
+  svg { width: 100%; height: auto; display: block; }
+  .svgtxt { font-family: 'DM Sans', sans-serif; }
+  ul, ol { margin: 0 0 18px 22px; }
+  li { margin-bottom: 10px; }
+  em { font-style: italic; }
+  strong { font-weight: 600; }
+  code { font-family: ui-monospace, Menlo, monospace; font-size: 0.85em; background: var(--warm-faint); padding: 1px 6px; border-radius: 4px; }
+  .gap { background: var(--diagram-bg); border: 1px solid var(--rule); border-radius: 10px; padding: 20px 22px; margin: 20px 0; }
+  .gap .gtitle { font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 15px; margin-bottom: 8px; }
+  .gap .field { font-size: 15.5px; margin-bottom: 8px; }
+  .gap .field b { font-family: 'DM Sans', sans-serif; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 2px; }
+  .footer { border-top: 1px solid var(--rule); margin-top: 72px; padding-top: 28px; font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--muted); }
+  @media (max-width: 480px) { .page { padding: 48px 20px 80px; } body { font-size: 16px; } }
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="header">
+  <div class="label">A Framework Paper · Fairbay</div>
+  <h1>The War Room Model</h1>
+  <p class="subtitle">AI-empowered product development for the smallest possible team: one human, many agents, and the procedures that let the room run while you're gone.</p>
+  <div class="audience"><strong>Who this is for:</strong> solo builders and tiny teams running real products on AI agents, and the people designing the frameworks and tools they use. It assumes you've felt the friction — agents that ask too much, or decide too silently — and offers vocabulary and procedure for the mode in between.</div>
+  <div class="byline">Baylee Miller · Fairbay · June 2026 · v2</div>
+</header>
+
+<h2><span class="num">1.</span>The Room</h2>
+<p>Imagine a sealed room holding ninety-nine domain experts. Engineers, designers, researchers, analysts — collectively they know more than you about nearly every domain that matters to your product. You are the hundredth person, and you are the least knowledgeable one in the room.</p>
+<p>You have exactly two properties no expert can replicate: <strong>you originated the mission</strong>, and <strong>you can leave the room</strong> — to act in the real world, to spend money, to talk to a customer, to feel whether the thing being built still matters.</p>
+<p>You visit sporadically. Between visits, the room operates: it researches, designs, builds, reviews its own work, and — critically — prepares <em>distilled decision points</em> for your return rather than a backlog of unprocessed questions. You are not the boss. You are the one who planted the seed and the one who can walk out the door.</p>
+<figure>
+<svg viewBox="0 0 700 270" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The room: many expert nodes inside a boundary, one mission-setter at the door connecting to the outside world">
+  <rect x="30" y="20" width="470" height="230" rx="14" fill="none" stroke="#d4cdc4" stroke-width="2"/>
+  <text x="50" y="48" class="svgtxt" font-size="12" fill="#6b635a" letter-spacing="2">THE ROOM</text>
+  <g fill="#5b7a64">
+    <circle cx="110" cy="100" r="13"/><circle cx="170" cy="78" r="13"/><circle cx="235" cy="105" r="13"/>
+    <circle cx="300" cy="80" r="13"/><circle cx="365" cy="108" r="13"/><circle cx="425" cy="82" r="13"/>
+    <circle cx="130" cy="170" r="13"/><circle cx="200" cy="190" r="13"/><circle cx="270" cy="165" r="13"/>
+    <circle cx="340" cy="192" r="13"/><circle cx="410" cy="168" r="13"/>
+  </g>
+  <text x="265" y="237" class="svgtxt" font-size="11.5" fill="#6b635a" text-anchor="middle">99 domain experts · autonomous between visits</text>
+  <rect x="500" y="95" width="8" height="80" fill="#d4cdc4"/>
+  <circle cx="560" cy="135" r="17" fill="#b8612e"/>
+  <text x="560" y="172" class="svgtxt" font-size="11.5" fill="#b8612e" text-anchor="middle" font-weight="600">mission-setter</text>
+  <path d="M 585 135 H 660" stroke="#b8612e" stroke-width="2" stroke-dasharray="5 4" fill="none"/>
+  <text x="623" y="124" class="svgtxt" font-size="10.5" fill="#6b635a" text-anchor="middle">the real world</text>
+</svg>
+<figcaption>Fig. 1 — Capability-based asymmetry: the human is the least knowledgeable and the only one who can leave.</figcaption>
+</figure>
+<p>The word choice is deliberate. Not <em>visionary</em> — a visionary implies the human knows what the solution looks like, and that is precisely wrong. <strong>Mission-setter</strong> names only what the human actually owns: the problem, the success criteria, the constraints. Never the solution shape.</p>
+
+<h2><span class="num">2.</span>The Three-Path Decision Problem</h2>
+<p>Watch any AI agent work for an afternoon and you'll see it resolve hundreds of micro-decisions. Today those resolutions take one of two paths, and both are failure modes at scale.</p>
+<p><strong>Path A — the unconscious decision.</strong> The agent picks a library, a schema, an interpretation of an ambiguous requirement, without ever registering that a choice existed. Failure analysis of agents on real GitHub issues catalogs exactly this: confident motion down an unexamined branch.</p>
+<p><strong>Path B — the full stop.</strong> The agent recognizes the choice and halts to ask, including for questions the existing documentation already answers. Each stop costs the mission-setter a context switch; enough of them and "AI-empowered" collapses into "AI-supervised."</p>
+<p><strong>Path C — deliberate autonomous resolution</strong> — is the missing mode: the agent <em>notices</em> the decision, runs a procedure to resolve it, documents the call with its rationale and alternatives, and keeps moving. Path C is not a capability; it's metacognition plus discipline. Awareness that a decision is happening, calibrated confidence about whether it can be made locally, and the discipline to write it down.</p>
+<figure>
+<svg viewBox="0 0 700 230" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three paths from a decision point: unconscious, full stop, and deliberate resolution">
+  <circle cx="80" cy="115" r="16" fill="#8b6e4e"/>
+  <text x="80" y="155" class="svgtxt" font-size="11" fill="#6b635a" text-anchor="middle">decision point</text>
+  <path d="M 100 105 C 200 45, 330 45, 430 45" stroke="#c4956a" stroke-width="3" fill="none"/>
+  <text x="450" y="40" class="svgtxt" font-size="13" fill="#c4956a" font-weight="600">A · unconscious</text>
+  <text x="450" y="57" class="svgtxt" font-size="11" fill="#6b635a">never noticed the fork</text>
+  <path d="M 100 115 H 415" stroke="#8b4513" stroke-width="3" fill="none"/>
+  <rect x="420" y="103" width="22" height="22" fill="#8b4513"/>
+  <text x="455" y="113" class="svgtxt" font-size="13" fill="#8b4513" font-weight="600">B · full stop</text>
+  <text x="455" y="130" class="svgtxt" font-size="11" fill="#6b635a">escalates everything</text>
+  <path d="M 100 125 C 200 185, 280 185, 360 185" stroke="#5b7a64" stroke-width="3" fill="none"/>
+  <circle cx="380" cy="185" r="9" fill="none" stroke="#5b7a64" stroke-width="3"/>
+  <path d="M 392 185 H 470" stroke="#5b7a64" stroke-width="3" fill="none" marker-end="none"/>
+  <text x="485" y="180" class="svgtxt" font-size="13" fill="#5b7a64" font-weight="600">C · deliberate resolution</text>
+  <text x="485" y="197" class="svgtxt" font-size="11" fill="#6b635a">notice → procedure → document → continue</text>
+</svg>
+<figcaption>Fig. 2 — Paths A and B are today's defaults. Path C is the mode worth engineering for.</figcaption>
+</figure>
+<p class="pull">The industry writes endlessly about when to ask the human, and endlessly analyzes the agent that never noticed the choice. The underarticulated path is the one in between.</p>
+
+<h2><span class="num">3.</span>The Decision Ladder</h2>
+<p>Path C needs a procedure, not a vibe. The Decision Ladder is a four-rung escalation sequence, with one rule: <strong>each rung must be genuinely exhausted before climbing</strong> — not glanced at, exhausted.</p>
+<ol>
+  <li><strong>Consult the documentation.</strong> Mission, spec, plan, prior decisions. Most "questions for the human" die here.</li>
+  <li><strong>Delegate to the right specialist lens.</strong> UX judgment, adversarial risk review, mechanical fact-finding, a cross-model second opinion. Reasoning, with the right reasoner.</li>
+  <li><strong>Make the call and document it.</strong> Decision, rationale, alternatives considered, confidence, reversibility. Rung 3 is not a failure state — a documented, reviewable judgment call is an act of autonomous competence regardless of whether it later proves optimal.</li>
+  <li><strong>Escalate to the mission-setter</strong> — only for the unresolvable, the irreversible, or the mission-level. And escalate <em>distilled</em>: the decision, the context, a recommendation.</li>
+</ol>
+<figure>
+<svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Four-rung ladder from consult docs up to escalate to mission-setter">
+  <line x1="120" y1="235" x2="120" y2="25" stroke="#8b6e4e" stroke-width="4"/>
+  <line x1="320" y1="235" x2="320" y2="25" stroke="#8b6e4e" stroke-width="4"/>
+  <g stroke="#8b6e4e" stroke-width="4">
+    <line x1="120" y1="205" x2="320" y2="205"/><line x1="120" y1="148" x2="320" y2="148"/>
+    <line x1="120" y1="91" x2="320" y2="91"/><line x1="120" y1="36" x2="320" y2="36"/>
+  </g>
+  <g class="svgtxt" font-size="13.5">
+    <text x="345" y="210" fill="#4a6a8a" font-weight="600">1 · consult the docs</text>
+    <text x="345" y="153" fill="#5b7a64" font-weight="600">2 · delegate to a specialist lens</text>
+    <text x="345" y="96" fill="#8b6e4e" font-weight="600">3 · make the call, document it</text>
+    <text x="345" y="41" fill="#b8612e" font-weight="600">4 · escalate, distilled</text>
+  </g>
+  <g class="svgtxt" font-size="10.5" fill="#6b635a">
+    <text x="345" y="226">mission · spec · plan · prior decisions</text>
+    <text x="345" y="169">judgment, risk, facts, cross-model</text>
+    <text x="345" y="112">rationale + alternatives + confidence + reversibility</text>
+    <text x="345" y="57">unresolvable · irreversible · mission-level only</text>
+  </g>
+</svg>
+<figcaption>Fig. 3 — The Decision Ladder. Exhaust each rung before the next; most climbs end at 1 or 3.</figcaption>
+</figure>
+<p>This maps cleanly onto the tiered human-in-the-loop architectures emerging in enterprise agent systems — action manifests classified by severity and reversibility, tiered reviewers, escalation routers. The ladder is the solo-builder's version of the same structure, with documentation standing in for the review hierarchy.</p>
+
+<h2><span class="num">4.</span>Mission Capture, Not Solution Design</h2>
+<p>The upfront interview is where most AI-assisted development goes subtly wrong. The common shape asks the human to co-design: which screens, which features, which stack. But the mission-setter is the least qualified person in the room for that conversation — and the only one qualified for a different one.</p>
+<p>Mission capture gathers what the human actually owns: <em>what problem exists, what success looks like, what constraints bind</em>. The room then designs the solution and presents it back for <strong>mission-alignment confirmation</strong> — "does this still serve the problem you brought?" — not feature-by-feature approval.</p>
+<figure>
+<svg viewBox="0 0 700 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mission capture flow: human provides problem, success criteria, constraints; room designs solution; human confirms alignment">
+  <circle cx="70" cy="105" r="17" fill="#b8612e"/>
+  <text x="70" y="143" class="svgtxt" font-size="11" fill="#b8612e" text-anchor="middle" font-weight="600">mission-setter</text>
+  <path d="M 95 105 H 175" stroke="#8b6e4e" stroke-width="2.5"/>
+  <rect x="180" y="45" width="170" height="120" rx="10" fill="none" stroke="#4a6a8a" stroke-width="2"/>
+  <g class="svgtxt" font-size="12" fill="#4a6a8a">
+    <text x="265" y="78" text-anchor="middle" font-weight="600">MISSION</text>
+    <text x="265" y="101" text-anchor="middle">the problem</text>
+    <text x="265" y="121" text-anchor="middle">success criteria</text>
+    <text x="265" y="141" text-anchor="middle">constraints</text>
+  </g>
+  <path d="M 355 105 H 425" stroke="#8b6e4e" stroke-width="2.5"/>
+  <rect x="430" y="45" width="170" height="120" rx="10" fill="none" stroke="#5b7a64" stroke-width="2"/>
+  <g class="svgtxt" font-size="12" fill="#5b7a64">
+    <text x="515" y="78" text-anchor="middle" font-weight="600">THE ROOM</text>
+    <text x="515" y="105" text-anchor="middle">designs the solution</text>
+    <text x="515" y="125" text-anchor="middle">spec · plan · build</text>
+  </g>
+  <path d="M 515 170 C 515 195, 100 195, 78 130" stroke="#c4956a" stroke-width="2.5" fill="none" stroke-dasharray="6 5"/>
+  <text x="300" y="200" class="svgtxt" font-size="11" fill="#6b635a" text-anchor="middle">alignment confirmation — "does this still serve the problem?"</text>
+</svg>
+<figcaption>Fig. 4 — The human supplies the mission; the room supplies the solution; the loop closes on alignment, not approval.</figcaption>
+</figure>
+<p>Keeping that loop closed over time, without the human's continuous presence, is its own role: a <strong>continuous alignment agent</strong> — the room's product manager, whose job is to notice when the solution is drifting from the mission between visits.</p>
+
+<h2><span class="num">5.</span>Documentation Is the Load-Bearing Structure</h2>
+<p>Everything above degrades into wishful thinking without one substrate: documentation that agents actually consult, write to, and treat as authoritative. The mission document anchors alignment. The spec is the quality contract. The plan is the executable how. The decision log is the room's institutional memory — the thing that makes Rung 1 of the ladder real rather than ceremonial. Sessions are disposable; the store of record is not. If a session's conclusions aren't written back, they didn't happen.</p>
+
+<h2><span class="num">6.</span>What the Evidence Says</h2>
+<p>The framework wasn't validated in a vacuum. Failure analysis on agentic coding benchmarks clusters cleanly into the model's categories: top models still fail GitHub-issue resolution through unflagged ambiguity (Path A) and through halting on questions the codebase already answers (Path B), while the best long-horizon performers are precisely the agents with structured procedures for exploring context and making documented calls (Path C). The convergence is broader than benchmarks: mission capture maps to spec-driven development; the ladder maps to tiered HITL escalation; documentation-as-structure is what the industry now calls context engineering. Different vocabularies, same architecture, arrived at independently — which suggests this paper is not ahead of a wave so much as describing the wave as it crests. Roughly seventy percent of the vision is achievable with today's tooling; the remaining thirty — reliable Path C metacognition, fluid cross-agent delegation, continuous alignment monitoring — is the active frontier.</p>
+
+<h2><span class="num">7.</span>Related Work</h2>
+<p>The War Room sits among, and differs from, three bodies of work. <strong>Multi-agent frameworks</strong> (MetaGPT, CrewAI, AutoGen) supply role-structured agent teams and even requirement-analysis phases, but center the orchestration graph rather than the human's decision economy — the question of <em>what reaches the mission-setter and in what form</em> is mostly unaddressed. <strong>Interoperability protocols</strong> (MCP for agent-to-tool, A2A for agent-to-agent) supply the connective tissue the room needs without prescribing how decisions move through it. <strong>Context engineering and spec-driven development</strong> supply the documentation substrate — persistent instruction files, specs as contracts — and are the nearest neighbors to this paper's load-bearing-documentation claim. The War Room's contribution relative to all three is the decision layer: the three-path framing, the ladder as default procedure, and Rung-3-is-not-a-failure as a cultural stance.</p>
+
+<h2><span class="num">8.</span>Current Gaps</h2>
+<p>None of these gaps are blocked by fundamental limitations in AI capability — they are workflow design problems. That claim deserves evidence, so each gap below carries a concrete failure observed in this model's own production use.</p>
+
+<div class="gap">
+  <div class="gtitle">Gap 1 — Path C doesn't self-invoke</div>
+  <div class="field"><b>The gap</b>Agents follow the ladder when instructed, but don't reliably recognize <em>that a decision is happening</em>. The metacognition is prompted, not native.</div>
+  <div class="field"><b>Observed</b>A routine instructed to push changes to a repo's main branch discovered it structurally couldn't — its environment only permitted draft pull requests. Instead of registering "the work order's constraint is unachievable here" as a decision point, it pushed to a branch and marked the task done. The fork was never noticed; a Path A failure inside an explicitly proceduralized system.</div>
+  <div class="field"><b>What helps</b>Gates that are code, not instructions. The fix wasn't a sterner prompt — it was a completion command that mechanically verifies the change exists on the main branch and refuses otherwise. Where metacognition is unreliable, move the check outside the agent's judgment.</div>
+</div>
+
+<div class="gap">
+  <div class="gtitle">Gap 2 — Intent coherence degrades across sessions</div>
+  <div class="field"><b>The gap</b>"The room works while the mission-setter is gone" assumes intent survives session boundaries. Long-horizon benchmarks and production experience both say it decays.</div>
+  <div class="field"><b>Observed</b>A decision was ratified and encoded in agent instructions: tag database writes by their actual originating surface. Three sessions later the decision was "live" in instructions while being silently rejected at three separate validation layers the deciding session never knew existed. Each subsequent session inherited the belief that the work was done; none re-derived the full dependency chain until a verification finally exercised it end to end.</div>
+  <div class="field"><b>What helps</b>Write-back discipline plus verification that touches the real system, not the documentation about the system. A decision isn't implemented until something mechanical has observed it working.</div>
+</div>
+
+<div class="gap">
+  <div class="gtitle">Gap 3 — Session-start context costs are paid by the human</div>
+  <div class="field"><b>The gap</b>Every fresh session must reconstruct where the work stands. Done badly, the reconstruction taxes the mission-setter — the one resource the model exists to protect.</div>
+  <div class="field"><b>Observed</b>A fresh session orienting on a project less than an hour old burned roughly a dozen tool calls hunting through prior-conversation search and artifact archaeology before producing a briefing — for state that a single structured read could have supplied.</div>
+  <div class="field"><b>What helps</b>A single store of record with a prescribed read path: project state, standing decisions, and a handoff document, rendered as a briefing before any work begins. Search over past conversations is the anti-pattern; the store is the memory.</div>
+</div>
+
+<div class="gap">
+  <div class="gtitle">Gap 4 — The alignment agent doesn't exist yet</div>
+  <div class="field"><b>The gap</b>Continuous mission-alignment monitoring is described here as a role, but no current framework ships it. Today it's approximated by per-phase alignment checkpoints — discrete, not continuous — and by the mission-setter noticing drift on visits, which is exactly the dependency the role is meant to remove.</div>
+  <div class="field"><b>What helps</b>Unknown, honestly. This is the most speculative element of the model and the one most worth building badly first.</div>
+</div>
+
+<h2><span class="num">9.</span>Conclusion</h2>
+<p>The asymmetry is real and it is the design constraint: the human knows the least and matters the most. Systems built on that premise stop optimizing for smarter answers to the human's questions and start optimizing for <em>fewer, better-prepared questions</em> — a room that exhausts its documentation, reasons with the right lens, makes documented calls without apology, and saves the door-knock for decisions that genuinely belong to the one person who can leave.</p>
+<p class="pull">The human isn't the boss. The human is the one who can leave the room — and the room should be worth coming back to.</p>
+
+<footer class="footer">
+  <p>Baylee Miller builds under the Fairbay name. This is v2 of the paper: §8 expanded with production-observed failure modes, related work added, audience framing added. The model described here runs Fairbay's actual development workflow.</p>
+</footer>
+
+</div>
+</body>
+</html>
